@@ -1,0 +1,20 @@
+## LED counting from the middle
+
+LED0 = D5
+LED1 = D13
+LED2 = D12
+LED3 = D6
+LED4 = D11
+LED5 = D9
+LED6 = D10
+LED7 = D7
+LED8 = D8
+LED9 = D4
+LED10 = A1
+
+## Sensors
+
+HALL = D2
+
+TILT_SHORT = D3
+TILT_LONG = A0
