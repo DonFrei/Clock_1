@@ -23,51 +23,52 @@ public:
     void setup(){
 		Serial.begin(460800);
 		
-		watch.set_frequency();
-		watch.create_frame();
-		watch.set_clock_face(1,20,1);
+		//watch.set_frequency();
+		//watch.create_frame();
+		//watch.set_clock_face(1,20,1);
 
-		row_counter = 0;
+		//row_counter = 0;
 		
-		hall_sonde = watch.hall_update();
+		//hall_sonde = watch.hall_update();
 		
-		timer = millis();
+		//timer = millis();
 		
-		freq_timer_now = 0;
-		freq_timer_last = 0;
+		//freq_timer_now = 0;
+		//freq_timer_last = 0;
 
     }
     
 
     void loop() {
-		// ## print array spalte i
-		watch.print_row(row_counter);
+		watch.set_one_led();
+		//// ## print array spalte i
+		//watch.print_row(row_counter);
 		
-		// ## ++i
-		++row_counter;
-		if (row_counter == 360){
-			row_counter = 0;
-			}
+		//// ## ++i
+		//++row_counter;
+		//if (row_counter == 360){
+			//row_counter = 0;
+			//}
 			
-		// ## delay depending on frequency
-		delay((1000*1000/(watch.get_freq()*360)));		//1000*to compensate increased accuracy 1000* because dealy in millis
+		//// ## delay depending on frequency
+		//delay((1000*1000/(watch.get_freq()*360)));		//1000*to compensate increased accuracy 1000* because dealy in millis
 
-		// ## hall als button vergleichen mit letzter abfrage if change => flanke, reset millis
-		if (hall_sonde == 1 && watch.hall_update() == 0 && (freq_timer_last-micros())>1000){
-			Serial.println("flanke");
-			row_counter = 0;
-			freq_timer_last = freq_timer_now;
-			freq_timer_now = micros();
-			watch.alter_freq(1000000000lu/(freq_timer_now-freq_timer_last),20);
-			}
-			hall_sonde = watch.hall_update();
+		//// ## hall als button vergleichen mit letzter abfrage if change => flanke, reset millis
+		//if (hall_sonde == 1 && watch.hall_update() == 0 && (freq_timer_last-micros())>1000){
+			//Serial.println("flanke");
+			//row_counter = 0;
+			//freq_timer_last = freq_timer_now;
+			//freq_timer_now = micros();
+////			watch.alter_freq(1000000000lu/(freq_timer_now-freq_timer_last),20);
+			//}
+			//hall_sonde = watch.hall_update();
 
-		// update time if necessary
-		if ((millis()-timer) > 1000){
-			watch.update_clock_face();
-			timer = millis();
-			}
-		//	watch.test_hall();
+		//// update time if necessary
+		//if ((millis()-timer) > 1000){
+			//watch.update_clock_face();
+			//timer = millis();
+			//}
+		////	watch.test_hall();
     }
     
 private:

@@ -19,8 +19,8 @@
 class watch_hand
 {
 private:
-	uint8_t const tilt_short_;
-	uint8_t const tilt_long_;
+	uint8_t tilt_short_;
+	uint8_t tilt_long_;
 	uint8_t hall_;
 	uint32_t freq_;
 	
@@ -106,20 +106,45 @@ public:
 		blink_all();
 		}
 	
-	//void set_one_led(){
-		//leds.set_led(1,LOW);
+	void set_one_led(){
+		leds.set_led(1,LOW);
+		leds.set_led(2,LOW);
+		leds.set_led(3,LOW);
+		delay(100);
+		leds.set_led(3,HIGH);
+		leds.set_led(1,HIGH);
+		leds.set_led(2,HIGH);
+		leds.set_led(7,LOW);
+		leds.set_led(8,LOW);
+		leds.set_led(9,LOW);
+		delay(100);
+		leds.set_led(7,HIGH);
+		leds.set_led(8,HIGH);
+		leds.set_led(9,HIGH);
+//		delay(100);
+	
 		//leds.set_led(2,LOW);
 		//leds.set_led(3,LOW);
 		//leds.set_led(4,LOW);
-		//leds.set_led(5,LOW);
-		//leds.set_led(6,LOW);
-		//leds.set_led(7,LOW);
-		//leds.set_led(8,LOW);
-		//}
+	//	leds.set_led(5,LOW);
+	//	leds.set_led(6,LOW);
+	//	leds.set_led(7,LOW);
+	//	leds.set_led(8,LOW);
+		}
 	
 	uint8_t hall_update(){
 		hall_ = digitalRead(2);
 		return hall_;
+		}
+		
+	uint8_t tilt_long_update(){
+		tilt_long_ = digitalRead(A0);
+		return tilt_long_;
+		}
+		
+	uint8_t tilt_short_update(){
+		tilt_short_ = digitalRead(3);
+		return tilt_short_;
 		}
 	
 	void test_hall(){
@@ -161,18 +186,24 @@ public:
 		
 	// factor: 100 equals 1 to 1, 1 equals 1.99 to 0.01
 	void alter_freq(uint32_t new_freq, uint8_t factor){
-		freq_ = (((2-factor/1000)*freq_+(factor/1000)*new_freq)/2);
+		freq_ = (((1-factor/100.0)*freq_+(factor/100.0)*new_freq));
 		}
 	
 	// returns frequency
 	uint8_t get_freq(){ return freq_;}
 	
 	
-	void go_to_sleep(){
+	void check_time_out(){
+		tilt_long_update();
+		tilt_short_update();
+		
 		if (tilt_long_ != tilt_short_){
 			delay(10);
+			tilt_long_update();
+			tilt_short_update();
+			
 			if (tilt_long_ != tilt_short_){
-				util::sleep(A0, CHANGE);
+				util::sleep(3, CHANGE);
 				}
 			}
 		}
